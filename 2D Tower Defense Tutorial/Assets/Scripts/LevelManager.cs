@@ -6,9 +6,12 @@ public class LevelManager : MonoBehaviour {
 	[SerializeField]
 	private GameObject[] tilePrefabs;
 
+	[SerializeField]
+	private CameraMovement cameraMovement;
+
 	private string[] mapData;
 
-	/// <summary>
+	/// <summary>y
 	/// Gets the width of the tile.
 	/// </summary>
 	/// <value>The width of the tile.</value>
@@ -56,13 +59,18 @@ public class LevelManager : MonoBehaviour {
 		//calculates the world origin to be the top left corner of the camera
 		Vector3 worldOrigin = Camera.main.ScreenToWorldPoint (new Vector3 (0, Screen.height));
 
+		Vector3 maxTilePositon = Vector3.zero;
+
 		//place the tiles
 		for (int y = 0; y < mapData.Length; y++) {
 			for (int x = 0; x < mapData[0].ToCharArray().Length; x++) {
 				int tileType = int.Parse(mapData[y].ToCharArray()[x].ToString());
-				placeTile (x, y, tileType, worldOrigin);
+				maxTilePositon = placeTile (x, y, tileType, worldOrigin);
 			}
 		}
+
+		cameraMovement.setLimits (new Vector3(maxTilePositon.x + tileWidth,
+			maxTilePositon.y - tileHeight));
 	}
 
 	/// <summary>
@@ -71,9 +79,11 @@ public class LevelManager : MonoBehaviour {
 	/// <param name="x">The x coordinate of the tile.</param>
 	/// <param name="y">The y coordinate of the tile.</param>
 	/// <param name="worldOrigin">The origin of the world.</param>
-	private void placeTile(int x, int y, int tileType, Vector3 worldOrigin){
+	private Vector3 placeTile(int x, int y, int tileType, Vector3 worldOrigin){
 		GameObject newTile = Instantiate (tilePrefabs[tileType]);
 		newTile.transform.position = new Vector3 (worldOrigin.x + (tileWidth * x), 
 			worldOrigin.y - (tileHeight * y), 0);
+
+		return newTile.transform.position;
 	}
 }
