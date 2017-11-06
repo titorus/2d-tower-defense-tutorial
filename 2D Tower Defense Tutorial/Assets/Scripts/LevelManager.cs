@@ -1,17 +1,25 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class LevelManager : MonoBehaviour {
 
 	[SerializeField]
 	private GameObject[] tilePrefabs;
+	[SerializeField]
+	private GameObject portalPrefab;
 
 	[SerializeField]
 	private CameraMovement cameraMovement;
 
 	private string[] mapData;
 
-	/// <summary>y
+	private Point startPortal;
+	private Point endPortal;
+
+	public Dictionary<Point, TileScript> Tiles { get; set; }
+
+	/// <summary>
 	/// Gets the width of the tile.
 	/// </summary>
 	/// <value>The width of the tile.</value>
@@ -33,6 +41,8 @@ public class LevelManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		Tiles = new Dictionary<Point, TileScript> ();
+
 		loadLevel ("level1");
 		createLevel ();
 	}
@@ -59,18 +69,22 @@ public class LevelManager : MonoBehaviour {
 		//calculates the world origin to be the top left corner of the camera
 		Vector3 worldOrigin = Camera.main.ScreenToWorldPoint (new Vector3 (0, Screen.height));
 
-		Vector3 maxTilePositon = Vector3.zero;
+		int mapGridX = mapData [0].ToCharArray ().Length;
+		int mapGridY = mapData.Length;
 
 		//place the tiles
-		for (int y = 0; y < mapData.Length; y++) {
-			for (int x = 0; x < mapData[0].ToCharArray().Length; x++) {
+		for (int y = 0; y < mapGridY; y++) {
+			for (int x = 0; x < mapGridX; x++) {
 				int tileType = int.Parse(mapData[y].ToCharArray()[x].ToString());
-				maxTilePositon = placeTile (x, y, tileType, worldOrigin);
+				placeTile (x, y, tileType, worldOrigin);
 			}
 		}
 
+		Vector3 maxTilePositon = Tiles [new Point (mapGridX - 1, mapGridY - 1)].transform.position;
 		cameraMovement.setLimits (new Vector3(maxTilePositon.x + tileWidth,
 			maxTilePositon.y - tileHeight));
+
+		createPortals ();
 	}
 
 	/// <summary>
@@ -79,11 +93,25 @@ public class LevelManager : MonoBehaviour {
 	/// <param name="x">The x coordinate of the tile.</param>
 	/// <param name="y">The y coordinate of the tile.</param>
 	/// <param name="worldOrigin">The origin of the world.</param>
-	private Vector3 placeTile(int x, int y, int tileType, Vector3 worldOrigin){
-		GameObject newTile = Instantiate (tilePrefabs[tileType]);
-		newTile.transform.position = new Vector3 (worldOrigin.x + (tileWidth * x), 
-			worldOrigin.y - (tileHeight * y), 0);
+	private void placeTile(int x, int y, int tileType, Vector3 worldOrigin){
+		//get the TileScript of the tile to place
+		TileScript newTileScript = Instantiate (tilePrefabs[tileType]).GetComponent<TileScript>();
+		//calculate the world position of the tile
+		Vector3 worldPosition = new Vector3 (worldOrigin.x + (tileWidth * x), worldOrigin.y - (tileHeight * y), 0);
 
-		return newTile.transform.position;
+		//coordinate of the Tile in the grid
+		Point gridPosition = new Point (x, y);
+
+		//setup the new tile
+		newTileScript.Setup (gridPosition, worldPosition);
+		Tiles.Add (gridPosition, newTileScript);
+	}
+
+	private void createPortals(){
+		startPortal = new Point (0, 1);
+		endPortal = new Point (19, 9);
+
+		Instantiate (portalPrefab, Tiles[startPortal].WorldPosition, Quaternion.identity);
+		Instantiate (portalPrefab, Tiles[endPortal].WorldPosition, Quaternion.identity);
 	}
 }

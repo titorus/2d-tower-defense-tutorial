@@ -166,10 +166,10 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 1000
+  far clip plane: 1500
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 7
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -281,6 +281,8 @@ MonoBehaviour:
   - {fileID: 1625192926224734, guid: cd3deac3d2d85d245997bc2c26c37e2f, type: 2}
   - {fileID: 1709250388408404, guid: 5997a087d992a27489986da05d37595c, type: 2}
   - {fileID: 1535712502652624, guid: 30bfb67bc7154d64aa0059ef2808f76e, type: 2}
+  portalPrefab: {fileID: 1735265323790196, guid: 15108dcfcf6e5d24b9d61f8030a0e83e,
+    type: 2}
   cameraMovement: {fileID: 61326157}
 --- !u!4 &1823305168
 Transform:
