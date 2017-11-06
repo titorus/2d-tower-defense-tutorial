@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LevelManager : MonoBehaviour {
+public class LevelManager : Singleton<LevelManager> {
 
 	[SerializeField]
 	private GameObject[] tilePrefabs;
@@ -11,6 +11,9 @@ public class LevelManager : MonoBehaviour {
 
 	[SerializeField]
 	private CameraMovement cameraMovement;
+
+	[SerializeField]
+	private Transform map;
 
 	private string[] mapData;
 
@@ -96,6 +99,7 @@ public class LevelManager : MonoBehaviour {
 	private void placeTile(int x, int y, int tileType, Vector3 worldOrigin){
 		//get the TileScript of the tile to place
 		TileScript newTileScript = Instantiate (tilePrefabs[tileType]).GetComponent<TileScript>();
+
 		//calculate the world position of the tile
 		Vector3 worldPosition = new Vector3 (worldOrigin.x + (tileWidth * x), worldOrigin.y - (tileHeight * y), 0);
 
@@ -103,8 +107,7 @@ public class LevelManager : MonoBehaviour {
 		Point gridPosition = new Point (x, y);
 
 		//setup the new tile
-		newTileScript.Setup (gridPosition, worldPosition);
-		Tiles.Add (gridPosition, newTileScript);
+		newTileScript.Setup (map, gridPosition, worldPosition);
 	}
 
 	private void createPortals(){
