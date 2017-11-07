@@ -8,6 +8,17 @@ public class TileScript : MonoBehaviour {
 	private Color32 fullColor = new Color32(150, 10, 10, 255);
 	private Color32 emptyColor = new Color32(10, 150, 10, 255);
 
+	private Color32 defaultColor;
+	public Color32 DefaultColor {
+		get {
+			return defaultColor;
+		}
+		set {
+			defaultColor = value;
+			spriteRenderer.color = value;
+		}
+	}
+
 	private SpriteRenderer spriteRenderer;
 
 	/// <summary>
@@ -18,6 +29,11 @@ public class TileScript : MonoBehaviour {
 
 	public bool IsEmpty { get; private set; }
 
+	public bool IsWalkable {
+		get;
+		set;
+	}
+
 	public Vector2 WorldPosition {
 		get{
 			Vector3 spriteSize = GetComponent<SpriteRenderer> ().bounds.size;
@@ -27,7 +43,8 @@ public class TileScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		spriteRenderer = GetComponent<SpriteRenderer> ();
+		spriteRenderer  = GetComponent<SpriteRenderer> ();
+		DefaultColor = Color.white;
 	}
 	
 	// Update is called once per frame
@@ -53,7 +70,7 @@ public class TileScript : MonoBehaviour {
 	}
 
 	private void OnMouseExit(){
-		spriteRenderer.color = Color.white;
+		spriteRenderer.color = DefaultColor;
 	}
 
 	public void Setup(Transform parent, Point gridPosition, Vector3 worldPosition){
@@ -62,6 +79,7 @@ public class TileScript : MonoBehaviour {
 		transform.position = worldPosition;
 
 		IsEmpty = true;
+		IsWalkable = true;
 
 		LevelManager.Instance.Tiles.Add (gridPosition, this);
 	}
@@ -73,7 +91,8 @@ public class TileScript : MonoBehaviour {
 			newTower.transform.SetParent (transform);
 
 			IsEmpty = false;
-			spriteRenderer.color = Color.white;
+			IsWalkable = false;
+			spriteRenderer.color = DefaultColor;
 
 			GameManager.Instance.BuyTower ();
 		}
