@@ -3,14 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : Singleton<GameManager> {
-
-	[SerializeField]
-	private GameObject towerPrefab;
-
-	public GameObject TowerPrefab{
-		get {
-			return towerPrefab;
-		}
+	
+	public TowerButton ActiveTowerButton {
+		get;
+		private set;
 	}
 
 	// Use this for initialization
@@ -21,5 +17,15 @@ public class GameManager : Singleton<GameManager> {
 	// Update is called once per frame
 	void Update () {
 		
+	}
+
+	public void pickTower(TowerButton towerButton){
+		ActiveTowerButton = towerButton;
+		Hover.Instance.Activate (towerButton.HoverSprite);
+	}
+
+	public void BuyTower(){
+		ActiveTowerButton = null;
+		Hover.Instance.Deactivate ();
 	}
 }
