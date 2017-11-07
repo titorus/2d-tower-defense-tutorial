@@ -1,15 +1,17 @@
 fileFormatVersion: 2
-guid: f547a6fcf04c52647a4633b2dc82df65
-timeCreated: 1509984264
+guid: fce481eb81774cd4eaac619d9179299e
+timeCreated: 1510037707
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
     21300000: Towers_1_0
     21300002: Towers_1_1
     21300004: Towers_1_2
-    21300006: FireTower_0
-    21300008: FireTower_1
-    21300010: FireTower_2
+    21300006: Towers_1_3
+    21300008: Towers_1_4
+    21300010: Towers_1_5
+    21300012: Towers_1_6
+    21300014: Towers_1_7
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
@@ -89,7 +91,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: FireTower_0
+      name: Towers_1_0
       rect:
         serializedVersion: 2
         x: 0
@@ -97,13 +99,13 @@ TextureImporter:
         width: 32
         height: 48
       alignment: 9
-      pivot: {x: 0, y: 0.65}
+      pivot: {x: 0, y: 0.6}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: FireTower_1
+      name: Towers_1_1
       rect:
         serializedVersion: 2
         x: 32
@@ -111,13 +113,13 @@ TextureImporter:
         width: 32
         height: 48
       alignment: 9
-      pivot: {x: 0, y: 0.65}
+      pivot: {x: 0, y: 0.6}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: FireTower_2
+      name: Towers_1_2
       rect:
         serializedVersion: 2
         x: 64
@@ -125,7 +127,77 @@ TextureImporter:
         width: 32
         height: 48
       alignment: 9
-      pivot: {x: 0, y: 0.65}
+      pivot: {x: 0, y: 0.6}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Towers_1_3
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 192
+        width: 32
+        height: 48
+      alignment: 9
+      pivot: {x: 0, y: 0.6}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Towers_1_4
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 144
+        width: 32
+        height: 48
+      alignment: 9
+      pivot: {x: 0, y: 0.6}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Towers_1_5
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 144
+        width: 32
+        height: 48
+      alignment: 9
+      pivot: {x: 0, y: 0.6}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Towers_1_6
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 144
+        width: 32
+        height: 48
+      alignment: 9
+      pivot: {x: 0, y: 0.6}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Towers_1_7
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 144
+        width: 32
+        height: 48
+      alignment: 9
+      pivot: {x: 0, y: 0.6}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
