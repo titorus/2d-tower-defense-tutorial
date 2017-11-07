@@ -5,11 +5,18 @@ using UnityEngine.EventSystems;
 
 public class TileScript : MonoBehaviour {
 
+	private Color32 fullColor = new Color32(150, 10, 10, 255);
+	private Color32 emptyColor = new Color32(10, 150, 10, 255);
+
+	private SpriteRenderer spriteRenderer;
+
 	/// <summary>
 	/// Gets or sets the grid position.
 	/// </summary>
 	/// <value>The grid position.</value>
 	public Point GridPosition { get; private set; }
+
+	public bool IsEmpty { get; private set; }
 
 	public Vector2 WorldPosition {
 		get{
@@ -20,7 +27,7 @@ public class TileScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		
+		spriteRenderer = GetComponent<SpriteRenderer> ();
 	}
 	
 	// Update is called once per frame
@@ -33,10 +40,20 @@ public class TileScript : MonoBehaviour {
 	/// </summary>
 	private void OnMouseOver(){
 		if (!EventSystem.current.IsPointerOverGameObject () && GameManager.Instance.ActiveTowerButton != null) {
+			if (IsEmpty) {
+				spriteRenderer.color = emptyColor;
+			} else {
+				spriteRenderer.color = fullColor;
+			}
+
 			if (Input.GetMouseButtonDown (0)) {
 				PlaceTower ();
 			}
 		}
+	}
+
+	private void OnMouseExit(){
+		spriteRenderer.color = Color.white;
 	}
 
 	public void Setup(Transform parent, Point gridPosition, Vector3 worldPosition){
@@ -44,14 +61,21 @@ public class TileScript : MonoBehaviour {
 		GridPosition = gridPosition;
 		transform.position = worldPosition;
 
+		IsEmpty = true;
+
 		LevelManager.Instance.Tiles.Add (gridPosition, this);
 	}
 
 	private void PlaceTower(){
-		GameObject newTower = Instantiate (GameManager.Instance.ActiveTowerButton.TowerPrefab, transform.position, Quaternion.identity);
-		newTower.GetComponent<SpriteRenderer> ().sortingOrder = GridPosition.Y;
-		newTower.transform.SetParent (transform);
+		if (IsEmpty) {
+			GameObject newTower = Instantiate (GameManager.Instance.ActiveTowerButton.TowerPrefab, transform.position, Quaternion.identity);
+			newTower.GetComponent<SpriteRenderer> ().sortingOrder = GridPosition.Y;
+			newTower.transform.SetParent (transform);
 
-		GameManager.Instance.BuyTower ();
+			IsEmpty = false;
+			spriteRenderer.color = Color.white;
+
+			GameManager.Instance.BuyTower ();
+		}
 	}
 }
