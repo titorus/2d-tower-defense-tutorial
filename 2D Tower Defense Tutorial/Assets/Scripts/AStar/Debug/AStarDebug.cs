@@ -53,26 +53,27 @@ public class AStarDebug : MonoBehaviour {
 		}
 	}
 
-	public void DebugPath(HashSet<AStarNode> openList, HashSet<AStarNode> closedList, int idx){
-		StartCoroutine (DebugPathTimed (openList, closedList, idx));
-	}
-
-	private IEnumerator DebugPathTimed(HashSet<AStarNode> openList, HashSet<AStarNode> closedList, int idx){
-		int secondsToWait = idx * 1;
-		yield return new WaitForSeconds (secondsToWait);
-
+	public void DebugPath(HashSet<AStarNode> openList, HashSet<AStarNode> closedList, Stack<AStarNode> path){
 		//change color of openList nodes
 		foreach(AStarNode node in openList){
-			if (node.TileReference != startTile) {
-				CreateDebugTile(node.TileReference, new Color32(0, 0, 215, 255));
-				PointToParent (node, node.TileReference.WorldPosition);
+			if (node.TileReference != startTile && node.TileReference != goalTile) {
+				CreateDebugTile(node.TileReference, Color.cyan, node);
 			}
+			PointToParent (node, node.TileReference.WorldPosition);
 		}
 
 		//display closed list nodes
 		foreach (AStarNode node in closedList) {
-			CreateDebugTile(node.TileReference, new Color32(0, 0, 150, 255));
+			if (node.TileReference != startTile && node.TileReference != goalTile && !path.Contains(node)) {
+				CreateDebugTile (node.TileReference, new Color32 (0, 0, 150, 255), node);
+			}
 			PointToParent (node, node.TileReference.WorldPosition);
+		}
+
+		foreach (AStarNode node in path) {
+			if (node.TileReference != startTile && node.TileReference != goalTile) {
+				CreateDebugTile (node.TileReference, Color.green, node);
+			}
 		}
 	}
 
@@ -115,10 +116,22 @@ public class AStarDebug : MonoBehaviour {
 		}
 	}
 
-	private GameObject CreateDebugTile(TileScript tile, Color32 color){
+	private GameObject CreateDebugTile(TileScript tile, Color32 color, AStarNode node = null){
 		GameObject debugTile = (GameObject) Instantiate (debugTilePrefab, tile.WorldPosition, Quaternion.identity);
 		debugTile.GetComponent<SpriteRenderer> ().color = color;
 		debugTile.GetComponent<SpriteRenderer> ().sortingOrder = tile.GetComponent<SpriteRenderer> ().sortingOrder + 1;
+		debugTile.GetComponent<Canvas> ().sortingOrder = tile.GetComponent<SpriteRenderer> ().sortingOrder + 2;
+
+		if (node != null) {
+			debugTile.GetComponent<AStarDebugTile> ().GValueText.gameObject.SetActive (true);
+			debugTile.GetComponent<AStarDebugTile> ().GValueText.text = "G: " + node.GScore.ToString ();
+
+			debugTile.GetComponent<AStarDebugTile> ().HValueText.gameObject.SetActive (true);
+			debugTile.GetComponent<AStarDebugTile> ().HValueText.text = "H: " + node.HScore.ToString ();
+
+			debugTile.GetComponent<AStarDebugTile> ().FValueText.gameObject.SetActive (true);
+			debugTile.GetComponent<AStarDebugTile> ().FValueText.text = "F: " + node.FScore.ToString ();
+		}
 
 		return debugTile;
 	}

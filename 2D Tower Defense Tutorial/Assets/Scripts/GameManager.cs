@@ -26,7 +26,7 @@ public class GameManager : Singleton<GameManager> {
 
 	// Use this for initialization
 	void Start () {
-		Currency = 100;
+		Currency = 10000;
 	}
 	
 	// Update is called once per frame
