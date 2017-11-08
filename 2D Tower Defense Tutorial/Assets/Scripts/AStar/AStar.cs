@@ -50,9 +50,12 @@ public class AStar {
 			}
 		}
 
+		openList.Remove (currentNode);
+		closedList.Add (currentNode);
+
 		//Debug the Neighbours of the Starting Node
 		if (isDebugActive ()) {
-			debugger.DebugPath (new HashSet<AStarNode>(openList), 1);
+			debugger.DebugPath (new HashSet<AStarNode>(openList), new HashSet<AStarNode>(closedList), 1);
 		}
 	}
 

@@ -8,17 +8,6 @@ public class TileScript : MonoBehaviour {
 	private Color32 fullColor = new Color32(150, 10, 10, 255);
 	private Color32 emptyColor = new Color32(10, 150, 10, 255);
 
-	private Color32 defaultColor;
-	public Color32 DefaultColor {
-		get {
-			return defaultColor;
-		}
-		set {
-			defaultColor = value;
-			spriteRenderer.color = value;
-		}
-	}
-
 	private SpriteRenderer spriteRenderer;
 
 	/// <summary>
@@ -44,7 +33,6 @@ public class TileScript : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		spriteRenderer  = GetComponent<SpriteRenderer> ();
-		DefaultColor = Color.white;
 	}
 	
 	// Update is called once per frame
@@ -70,7 +58,7 @@ public class TileScript : MonoBehaviour {
 	}
 
 	private void OnMouseExit(){
-		spriteRenderer.color = DefaultColor;
+		spriteRenderer.color = Color.white;
 	}
 
 	public void Setup(Transform parent, Point gridPosition, Vector3 worldPosition){
@@ -92,7 +80,7 @@ public class TileScript : MonoBehaviour {
 
 			IsEmpty = false;
 			IsWalkable = false;
-			spriteRenderer.color = DefaultColor;
+			spriteRenderer.color = Color.white;
 
 			GameManager.Instance.BuyTower ();
 		}

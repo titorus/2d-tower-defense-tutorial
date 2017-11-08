@@ -9,6 +9,9 @@ public class AStarDebug : MonoBehaviour {
 	[SerializeField]
 	private GameObject arrowPrefab;
 
+	[SerializeField]
+	private GameObject debugTilePrefab;
+
 	// Use this for initialization
 	void Start () {
 		
@@ -38,32 +41,38 @@ public class AStarDebug : MonoBehaviour {
 					//first we want to set the start tile
 					if (startTile == null) {
 						startTile = tmp;
-						startTile.DefaultColor = new Color32 (255, 132, 0, 255);
+						CreateDebugTile(tmp, new Color32(255, 132, 0, 255));
 					} 
 					//then we want to set the goal tile
 					else if (goalTile == null) {
 						goalTile = tmp;
-						goalTile.DefaultColor = new Color32 (255, 0, 0, 255);
+						CreateDebugTile(tmp, new Color32(255, 0, 0, 255));
 					}
 				}
 			}
 		}
 	}
 
-	public void DebugPath(HashSet<AStarNode> openList, int idx){
-		StartCoroutine (DebugPathTimed (openList, idx));
+	public void DebugPath(HashSet<AStarNode> openList, HashSet<AStarNode> closedList, int idx){
+		StartCoroutine (DebugPathTimed (openList, closedList, idx));
 	}
 
-	private IEnumerator DebugPathTimed(HashSet<AStarNode> openList, int idx){
+	private IEnumerator DebugPathTimed(HashSet<AStarNode> openList, HashSet<AStarNode> closedList, int idx){
 		int secondsToWait = idx * 1;
 		yield return new WaitForSeconds (secondsToWait);
 
 		//change color of openList nodes
 		foreach(AStarNode node in openList){
 			if (node.TileReference != startTile) {
-				node.TileReference.DefaultColor = new Color32 (0, 0, 125, 125);
+				CreateDebugTile(node.TileReference, new Color32(0, 0, 215, 255));
 				PointToParent (node, node.TileReference.WorldPosition);
 			}
+		}
+
+		//display closed list nodes
+		foreach (AStarNode node in closedList) {
+			CreateDebugTile(node.TileReference, new Color32(0, 0, 150, 255));
+			PointToParent (node, node.TileReference.WorldPosition);
 		}
 	}
 
@@ -104,5 +113,13 @@ public class AStarDebug : MonoBehaviour {
 		else if (node.gridPosition.X < node.Parent.gridPosition.X && node.gridPosition.Y < node.Parent.gridPosition.Y) {
 			arrow.transform.eulerAngles = new Vector3(0, 0, 315);
 		}
+	}
+
+	private GameObject CreateDebugTile(TileScript tile, Color32 color){
+		GameObject debugTile = (GameObject) Instantiate (debugTilePrefab, tile.WorldPosition, Quaternion.identity);
+		debugTile.GetComponent<SpriteRenderer> ().color = color;
+		debugTile.GetComponent<SpriteRenderer> ().sortingOrder = tile.GetComponent<SpriteRenderer> ().sortingOrder + 1;
+
+		return debugTile;
 	}
 }

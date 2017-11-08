@@ -563,6 +563,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   arrowPrefab: {fileID: 1378736633604050, guid: 1b6a68c0fce4163488fc42940b2cec7e,
     type: 2}
+  debugTilePrefab: {fileID: 1605117619237164, guid: 9969dfddf70c9904ead832f5ec18a9ba,
+    type: 2}
 --- !u!1 &543563004
 GameObject:
   m_ObjectHideFlags: 0
