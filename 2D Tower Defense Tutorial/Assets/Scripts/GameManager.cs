@@ -24,6 +24,15 @@ public class GameManager : Singleton<GameManager> {
 		private set;
 	}
 
+	public ObjectPool Pool {
+		get;
+		private set;
+	}
+
+	private void Awake(){
+		Pool = GetComponent<ObjectPool> ();
+	}
+
 	// Use this for initialization
 	void Start () {
 		Currency = 10000;
@@ -71,5 +80,16 @@ public class GameManager : Singleton<GameManager> {
 
 		ActiveTowerButton = null;
 		Hover.Instance.Deactivate ();
+	}
+
+	public void StartWave(){
+		StartCoroutine (SpawnWave ());
+	}
+
+	private IEnumerator SpawnWave(){
+		yield return new WaitForSeconds (2.5f);
+
+		GameObject newEnemey = Pool.getObject ("Crocodile");
+		Debug.Log (newEnemey.name);
 	}
 }
