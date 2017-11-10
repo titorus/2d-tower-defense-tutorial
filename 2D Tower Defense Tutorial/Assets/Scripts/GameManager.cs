@@ -87,9 +87,11 @@ public class GameManager : Singleton<GameManager> {
 	}
 
 	private IEnumerator SpawnWave(){
-		yield return new WaitForSeconds (2.5f);
+		LevelManager.Instance.GeneratePath ();
 
-		GameObject newEnemey = Pool.getObject ("Crocodile");
-		Debug.Log (newEnemey.name);
+		Enemy newEnemey = Pool.getObject ("Crocodile").GetComponent<Enemy>();
+		newEnemey.Spawn ();
+
+		yield return new WaitForSeconds (2.5f);
 	}
 }

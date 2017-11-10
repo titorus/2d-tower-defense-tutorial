@@ -20,6 +20,16 @@ public class LevelManager : Singleton<LevelManager> {
 	private Point startPortal;
 	private Point endPortal;
 
+	private Stack<AStarNode> enemyPath;
+	public Stack<AStarNode> EnemyPath {
+		get{
+			if (enemyPath == null) {
+				GeneratePath ();
+			}
+			return new Stack<AStarNode> (new Stack<AStarNode>(enemyPath));
+		}
+	}
+
 	public Dictionary<Point, TileScript> Tiles { get; set; }
 
 	/// <summary>
@@ -40,6 +50,11 @@ public class LevelManager : Singleton<LevelManager> {
 		get{
 			return tilePrefabs[0].GetComponent<SpriteRenderer> ().sprite.bounds.size.y;	
 		}
+	}
+
+	public Portal SpawnPortal {
+		get;
+		private set;
 	}
 
 	// Use this for initialization
@@ -114,7 +129,13 @@ public class LevelManager : Singleton<LevelManager> {
 		startPortal = new Point (0, 1);
 		endPortal = new Point (19, 9);
 
-		Instantiate (portalPrefab, Tiles[startPortal].WorldPosition, Quaternion.identity);
+		GameObject tmp = Instantiate (portalPrefab, Tiles[startPortal].WorldPosition, Quaternion.identity);
+		SpawnPortal = tmp.GetComponent<Portal> ();
+		SpawnPortal.name = "SpawnPortal";
 		Instantiate (portalPrefab, Tiles[endPortal].WorldPosition, Quaternion.identity);
+	}
+
+	public void GeneratePath(){
+		enemyPath = AStar.GetPath (startPortal, endPortal);
 	}
 }

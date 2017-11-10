@@ -6,22 +6,18 @@ public class AStar {
 
 	private static Dictionary<Point, AStarNode> nodes;
 
-	private static AStarDebug debugger;
-
 	/// <summary>
 	/// Creates the nodes on which we will perform the A* Algorithm.
 	/// </summary>
 	private static void CreateNodes(){
 		nodes = new Dictionary<Point, AStarNode> ();
 
-		debugger = GameObject.Find ("Debug").GetComponent<AStarDebug> ();
-
 		foreach (TileScript tile in LevelManager.Instance.Tiles.Values) {
 			nodes.Add (tile.GridPosition, new AStarNode(tile));
 		}
 	}
 
-	public static void GetPath(Point start, Point goal){
+	public static Stack<AStarNode> GetPath(Point start, Point goal){
 		if (nodes == null) CreateNodes ();
 
 		HashSet<AStarNode> openList = new HashSet<AStarNode> ();
@@ -87,12 +83,13 @@ public class AStar {
 
 				break;
 			}
+				
 		}
 
 		//Debug the Neighbours of the Starting Node
-		if (isDebugActive ()) {
-			debugger.DebugPath (new HashSet<AStarNode> (openList), new HashSet<AStarNode> (closedList), path);
-		}
+		//GameObject.Find ("Debug").GetComponent<AStarDebug> ().DebugPath (new HashSet<AStarNode> (openList), new HashSet<AStarNode> (closedList), path);
+
+		return path;
 	}
 
 	private static bool ConnectedDiagonally(AStarNode currentNode, AStarNode neighbor){
@@ -109,9 +106,5 @@ public class AStar {
 		}
 
 		return true;
-	}
-
-	private static bool isDebugActive(){
-		return debugger != null;
 	}
 }
