@@ -127,12 +127,19 @@ public class LevelManager : Singleton<LevelManager> {
 
 	private void createPortals(){
 		startPortal = new Point (0, 1);
-		endPortal = new Point (19, 9);
+		endPortal = new Point (2, 1);
 
 		GameObject tmp = Instantiate (portalPrefab, Tiles[startPortal].WorldPosition, Quaternion.identity);
 		SpawnPortal = tmp.GetComponent<Portal> ();
 		SpawnPortal.name = "SpawnPortal";
-		Instantiate (portalPrefab, Tiles[endPortal].WorldPosition, Quaternion.identity);
+
+		GameObject goal = Instantiate (portalPrefab, Tiles[endPortal].WorldPosition, Quaternion.identity);
+		goal.tag = "GoalPortal";
+		goal.name = "GoalPortal";
+
+		BoxCollider2D goalCollider = goal.AddComponent(typeof(BoxCollider2D)) as BoxCollider2D;
+		goalCollider.isTrigger = true;
+		goalCollider.size = new Vector2 (1f, 1f);
 	}
 
 	public void GeneratePath(){
