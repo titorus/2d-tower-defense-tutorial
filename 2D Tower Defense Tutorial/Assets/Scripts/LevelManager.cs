@@ -127,7 +127,7 @@ public class LevelManager : Singleton<LevelManager> {
 
 	private void createPortals(){
 		startPortal = new Point (0, 1);
-		endPortal = new Point (2, 1);
+		endPortal = new Point (17, 9);
 
 		GameObject tmp = Instantiate (portalPrefab, Tiles[startPortal].WorldPosition, Quaternion.identity);
 		SpawnPortal = tmp.GetComponent<Portal> ();
