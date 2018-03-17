@@ -77,6 +77,9 @@ public class AStar {
 			if (currentNode == nodes [goal]) {
 				path.Push (currentNode);
 				while (currentNode.Parent != null) {
+					// avoid memory leak when repeat GetPath and start/goal Tile are different
+					if (path.Contains(currentNode.Parent)) break;
+					
 					path.Push (currentNode.Parent);
 					currentNode = currentNode.Parent;
 				}
